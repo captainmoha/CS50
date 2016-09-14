@@ -1,0 +1,9 @@
+questions.txt
+
+Computer Science 50
+Problem Set 3
+
+0. Between 3x3 and 9x9 inclusive.
+1. A 2 dimensional array
+2. greet()
+3. Functions to implement: init(), draw(), move(), won()
