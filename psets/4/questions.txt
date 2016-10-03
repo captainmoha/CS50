@@ -32,8 +32,19 @@ ________________________________________________________________________________
 3.  The format that is lossy compressed is JPEG
 
 __________________________________________________________________________________________
-4.  TODO
-5.  TODO
+4.  When a file is deleted in a FAT file-system two things happen:
+        1- The file name’s first character in the file’s directory entry is changed, 
+        to signal that the file has been deleted and that the directory entry can be recycled.
+        2- All of the file's FAT clusters are moved to the hard-disk's list of free clusters
+        * Note: the actual file data is never touched.
+
+__________________________________________________________________________________________
+
+5.  In order to make sure that the files that are deleted cannot be recovered by anybody,
+    One should use tools to overwrite the blocks on the disk that has the file's data.
+    This has to happen because a normal delete command does not really delete the file.
+    Simply filling the blocks with zero's or another pattern multiple times is sufficient at most cases.
+__________________________________________________________________________________________
 6.  TODO
 7.  TODO
 8.  TODO
