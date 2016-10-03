@@ -1,7 +1,37 @@
-0.  TODO
-1.  TODO
-2.  TODO
-3.  TODO
+0.  Number of colors that each format supports
+    - BMP: For 24-bit BMP which allows 3 bytes/pixel, it supports 2^24 = 16,777,216 or 16 million colors.
+           For 32-bit BMP which allows 4 bytes/pixel, it supports 2^32 = 4,294,967,296 or 4 billion colors.
+           
+    - GIF: It allows 8 bits/pixel which means it supports 2^8 = 256 colors.
+    
+    - JPEG: 24 bit/pixel, which means it supports 2^24 = 16,777,216 or 16 million colors.
+    
+    - PNG: For 24-bit PNG which allows 3 bytes/pixel, it supports 2^24 = 16,777,216 or 16 million colors.
+           For 32-bit PNG which allows 4 bytes/pixel, it supports 2^32 = 4,294,967,296 or 4 billion colors.
+
+__________________________________________________________________________________________
+
+1.  The formats that support animation are:
+        GIF and PNG.
+
+__________________________________________________________________________________________
+
+2.  Lossless compression : 
+        is a technique used to reduce the size of a file without losing any of the original data.
+        The file can be reconstructed exactly as it was before compression.
+        It is used when we care more about the quality of the image than the size.
+        Some algorithms that are used for lossless compression are LZW and Huffman coding.
+
+    Lossy compression : is a type of compression that is used to reduce the size of a file considerably.
+        When a lossy compression algorithm is used, some of the original data is lost forever.
+        The original image cannot be reconstructed from the compressed one.
+        Some algorithms that are lossy are DCT and MP3
+
+__________________________________________________________________________________________
+
+3.  The format that is lossy compressed is JPEG
+
+__________________________________________________________________________________________
 4.  TODO
 5.  TODO
 6.  TODO
