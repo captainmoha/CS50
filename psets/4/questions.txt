@@ -72,12 +72,39 @@ ________________________________________________________________________________
     0x424d in hexadecimal
 ________________________________________________________________________________________
 
-10. TODO
-11. TODO
-12. TODO
-13. TODO
-14. TODO
-15. TODO
-16. TODO
-17. TODO
+10. The difference between bfSize and biSize:
+    bfSize is the size of the whole BMP file in bytes
+    biSize is the size of the BITMAPINFOHEADER structure
+__________________________________________________________________________________________
+
+11. If biHeight is negative that means that the pixels in the BMP image are arranged from the top to the bottom,
+    And that the origin is the upper left corner.
+    Furthermore, since the BMP is top-down it cannot be compressed and thus biCompression must either be BI_RGB or BI_BITFIELDS.
+__________________________________________________________________________________________
+
+12. The field that specifies the BMP's color depth in the BITMAPINFOHEADER structure is biBitCount.
+__________________________________________________________________________________________
+
+13. fopen might return NULL in copy.c:37 because of any of the following reasons:
+    1. The file is opened with the wrong mode when we try to write to it.
+    2. We don't have permission to open/save the file in that particular directory.
+    3. The system does not allow a certain character in the file name.
+__________________________________________________________________________________________
+
+14. The third argument to fread is always 1 in our code because:
+    This argument specifies the number of blocks(times) that fread should read the bytes of the size specified in the second argument. When we read something in copy.c -as for example with reading triples of RGB values- we only need to read the current triple and nothing after it.
+__________________________________________________________________________________________
+
+15. in copy.c:70 padding will have the value 0 if bi.biWidth is 3.
+    Based on this formuala padding = (4 - (3 * 24 % 4) % 4.
+__________________________________________________________________________________________
+
+16. fseek is a function that allows us to control the position of the file.
+    We can go forwards with positive offsets or backward with negative ones. We can also choose the position from which to seek from by setting the third argument to either SEEK_CUR, SEEK_SET, Or SEEK_END.
+    in copy.c we use it skip over the padding in the input file.
+__________________________________________________________________________________________
+
+17. SEEK_CUR is a constant that has the value of the current position of the file pointer.
+__________________________________________________________________________________________
+
 18. TODO
