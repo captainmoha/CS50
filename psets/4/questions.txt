@@ -31,7 +31,7 @@ ________________________________________________________________________________
 
 3.  The format that is lossy compressed is JPEG
 
-__________________________________________________________________________________________
+_________________________________________________________________________________________
 4.  When a file is deleted in a FAT file-system two things happen:
         1- The file name’s first character in the file’s directory entry is changed, 
         to signal that the file has been deleted and that the directory entry can be recycled.
@@ -45,10 +45,33 @@ ________________________________________________________________________________
     This has to happen because a normal delete command does not really delete the file.
     Simply filling the blocks with zero's or another pattern multiple times is sufficient at most cases.
 __________________________________________________________________________________________
-6.  TODO
-7.  TODO
-8.  TODO
-9.  TODO
+
+6.  "stdint.h" is a header file which contains definitions of exact width(size) integer types.
+    This is useful because it allows code to be portable as the regular integer types depend on the architecture and implementation.
+    The types can be used with this formula (intN_t) where N is the number of bits for the type
+    for example int8_t will always be a one byte integer on any platform and with any compiler.
+__________________________________________________________________________________________
+
+7.  using uint8_t, uint32_t, int32_t, and uint16_t in a program is useful because,
+    this allows us to set the size of the integer type exactly. Hence, we won't have any surprises when this program is run on another machine with a different archeticture or compiled with a differnt compiler. 
+__________________________________________________________________________________________
+
+8.  A BYTE type is one byte. As it is defined as uint8_t
+    A DWORD type is 4 bytes. As it is defined as uint32_t
+    A LONG type is 4 bytes. As it is defined as int32_t
+    A WORD type is 2 bytes. As it is defined as uint16_t
+__________________________________________________________________________________________
+
+9.  The first 2 bytes of any BMP file must be:
+    BM in ASCII
+    or
+
+    66 77 in decimal
+    or
+
+    0x424d in hexadecimal
+________________________________________________________________________________________
+
 10. TODO
 11. TODO
 12. TODO
