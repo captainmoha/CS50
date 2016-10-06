@@ -69,7 +69,7 @@ ________________________________________________________________________________
     66 77 in decimal
     or
 
-    0x424d in hexadecimal
+    0x4d42 in hexadecimal
 ________________________________________________________________________________________
 
 10. The difference between bfSize and biSize:
@@ -95,8 +95,8 @@ ________________________________________________________________________________
     This argument specifies the number of blocks(times) that fread should read the bytes of the size specified in the second argument. When we read something in copy.c -as for example with reading triples of RGB values- we only need to read the current triple and nothing after it.
 __________________________________________________________________________________________
 
-15. in copy.c:70 padding will have the value 0 if bi.biWidth is 3.
-    Based on this formuala padding = (4 - (3 * 24 % 4) % 4.
+15. in copy.c:70 padding will have the value 3 if bi.biWidth is 3.
+    Based on this formuala padding = (4 - (3 * 3 % 4) % 4.
 __________________________________________________________________________________________
 
 16. fseek is a function that allows us to control the position of the file.
@@ -107,4 +107,4 @@ ________________________________________________________________________________
 17. SEEK_CUR is a constant that has the value of the current position of the file pointer.
 __________________________________________________________________________________________
 
-18. TODO
+18. whodunit ? Rick Astley!
