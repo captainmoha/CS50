@@ -102,13 +102,13 @@ int main(int argc, char* argv[])
         // an array to keep each row
         RGBTRIPLE* tripleRow = malloc(sizeof(RGBTRIPLE) * oldBiWidth);
 
-        printf("padding: %i\tw: %i\n", oldPadding, oldBiWidth);
+        // printf("padding: %i\tw: %i\n", oldPadding, oldBiWidth);
 
         // read current row into array
         for (int j = 0; j < oldBiWidth; j++)
         {
             fread(&tripleRow[j], sizeof(RGBTRIPLE), 1, inFile);
-            printf("%x\n", tripleRow[j]);
+            // printf("%x\n", tripleRow[j]);
         }
 
         // SEEK THROUGH PADDING. DO NOT READ OLD PADDING (IT'S BAD FOR YA!)
