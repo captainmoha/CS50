@@ -4,7 +4,6 @@
 #include "bmp.h"
 
 #define BYTES_PER_PIXEL 3
-#define BMB_HEADERS_SIZE 54
 
 int checkFactor(char* arg);
 int StrToInt(char* str);
@@ -85,10 +84,10 @@ int main(int argc, char* argv[])
     int padding =  (4 - (infHeader.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
 
     // calculate new image size including padding but (without the headers)
-    infHeader.biSizeImage = (infHeader.biWidth * infHeader.biHeight) * BYTES_PER_PIXEL + (padding * BYTES_PER_PIXEL);
-
+    infHeader.biSizeImage = (infHeader.biWidth * abs(infHeader.biHeight)) * BYTES_PER_PIXEL + (padding * BYTES_PER_PIXEL);
+    
     // calculate new file size which includes everything image + headers
-    fHeader.bfSize = infHeader.biSizeImage + BMB_HEADERS_SIZE;
+    fHeader.bfSize = infHeader.biSizeImage + fHeader.bfOffBits;
 
     // write the file headers to the new resized image file
     fwrite(&fHeader, sizeof(BITMAPFILEHEADER), 1, outFile);
