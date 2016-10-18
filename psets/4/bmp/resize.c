@@ -84,7 +84,7 @@ int main(int argc, char* argv[])
     int padding =  (4 - (infHeader.biWidth * sizeof(RGBTRIPLE)) % 4) % 4;
 
     // calculate new image size including padding but (without the headers)
-    infHeader.biSizeImage = (infHeader.biWidth * abs(infHeader.biHeight)) * BYTES_PER_PIXEL + (padding * infHeader.biHeight);
+    infHeader.biSizeImage = (infHeader.biWidth * abs(infHeader.biHeight)) * BYTES_PER_PIXEL + (padding * abs(infHeader.biHeight));
     
     // calculate new file size which includes everything image + headers
     fHeader.bfSize = infHeader.biSizeImage + fHeader.bfOffBits;
