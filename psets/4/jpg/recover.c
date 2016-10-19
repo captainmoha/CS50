@@ -16,7 +16,7 @@
 typedef uint8_t BYTE;
 int isStartJPG(BYTE* buffer);
 
-int main(int argc, char* argv[])
+int main(void)
 {
     
     FILE* imgFile = fopen(RAW_IMG, "r");
