@@ -31,12 +31,14 @@ int main(void)
 	}
 
 
-	crawler = head;
-	while (crawler != NULL)
-	{
+	
+	while (head != NULL)
+	{	
+		crawler = head;
+		head = head->next;
 		free(crawler);
-		crawler = crawler->next;
 	}
+	
 	return 0;
 }
 
