@@ -1,10 +1,41 @@
-0.  TODO
-1.  TODO
-2.  TODO
-3.  TODO
-4.  TODO
-5.  TODO
-6.  TODO
+0.  An artificial long word said to mean a lung disease caused by inhaling very fine ash and sand dust.
+
+1.  getrusuage is function that returns resource usage for a given process, its children, or its thread.
+	it returns 0 on success and -1 on error
+
+2.  The rusage struct has 16 members.
+
+3.  The variables before and after are of type rusage. rusage is a structure that consists of 16 memebers.
+	These memebers take a up a considerable amount of space so passin them by value is relatively time-consuming.
+	When we pass by reference, we pass the actual strcture, so we avoid the work needed to copy the structure when we pass by value. This helps performance.
+
+
+4.  In speller.c the for loop that reads in words from the text file works as follows:
+	
+	- Firstly, some variables are initialized to 0 in order to use them as counters for different things.
+		- index: used to access a char in the char array which represents the word.
+		- words: keeps the number of words currently loaded from the file.
+		- misspellings: keeps the number of misspelled words in the file.
+
+	- Then, we go through the file letter by letter using the fgetc() function.
+		- while each time making sure that we only consider a word valid, if it is comprised of only alphabetical chars or apostrophes. And it's not longer than LENGTH which is define in dictionary.h. If a word isn't valid we just read the rest of its charachters (without doing anything with them) to move the file cursor to the next word.
+
+	- Finally, once we made sure that a word is valid.
+		- we increment the words counter.
+		- we call the check() function on the word to see it was misspelled, and we measure the time that the check() function took to run. We do this using getrusage().
+		- if the word is misspelled we update the misspelled counter.
+		- we the prepare to read a new word by reseting the index to 0 in order to read the new word into the string correctly.
+
+
+5.  We read one char at a time in order to be able to validate that the word is valid, ie : it is comprised of only
+	alphabetical chars or apostrophes. And more importantly to make sure that the word fits into our char array.
+	if we read a word that doesn't fit we will be accessing memory that we shouldn't and hence we may get a segmentation fault.
+
+6.  The parameters for check() and load() are define as constants because this makes sure that the parameters are not
+	changed inside the function. It is also a good practice to do this to point out that this argument is input that should
+	not be changed.
+
+	
 7.  TODO
 8.  TODO
 9.  TODO
