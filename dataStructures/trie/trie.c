@@ -7,7 +7,7 @@
 // maximum length for a word
 // (e.g., pneumonoultramicroscopicsilicovolcanoconiosis)
 #define LENGTH 45
-#define ALPHABET_LENGTH 26
+#define ALPHABET_LENGTH 27
 
 // trie structure
 typedef struct trie {
@@ -28,9 +28,9 @@ unsigned int size = 0;
 int main(void)
 {	
 	root = createTrie();
-	/*char* strings[] = {"array", "link", "linkedlist", "stack", "queue", "hashtable", "moha", "haha", "oh", "yeah"};
+/*	char* strings[] = {"array", "link", "linkedlist", "stack's", "queue", "hashtable", "moha", "haha", "oh", "yeah", "arg"};
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 11; ++i)
 	{
 		insert(strings[i]);
 	}
@@ -49,7 +49,7 @@ int main(void)
 		char word[LENGTH];
 		while (fscanf(dictFile, "%s", word) == 1)
 		{	
-			printf("%s\n", word);
+			// printf("%s\n", word);
 			insert(word);
 		}
 		fclose(dictFile);
@@ -67,7 +67,7 @@ int main(void)
 trie* createTrie()
 {
 	trie* newTrie = malloc(sizeof(trie));
-
+	// newTrie->paths = malloc(sizeof(trie) * 26);
 	for (int i = 0; i < ALPHABET_LENGTH; i++)
 	{
 		newTrie->paths[i] = NULL;
@@ -84,7 +84,7 @@ void insert(char* word)
 	trie* crawler = root;
 	for (i = 0, len = strlen(word); i < len; i++)
 	{	
-		path = tolower(word[i]) - 'a';
+		path = (isalpha(word[i])) ? tolower(word[i]) - 'a' : ALPHABET_LENGTH - 1;
 		if (crawler->paths[path] == NULL)
 		{
 			crawler->paths[path] = createTrie();
@@ -102,7 +102,7 @@ bool find(char* word)
 	trie* crawler = root;
 	for (int i = 0; i < strlen(word); ++i)
 	{	
-		int path = tolower(word[i]) - 'a';
+		int path = (isalpha(word[i])) ? tolower(word[i]) - 'a' : ALPHABET_LENGTH - 1;
 		printf("path is %d : %c\n", path, path+'a');
 		if (crawler->paths[path] == NULL)
 		{
@@ -117,33 +117,26 @@ bool find(char* word)
 
 void printTrie(trie* current, char* word)
 {	
-	// printf("Func: %s\n", word);
-
-	for (int i = 0; i < ALPHABET_LENGTH; i++)
-	{	
-		// printf("Lop: %s\n", word);
-		if (current->paths[i] != NULL)
-		{	
-
-			if (current->isWord)
-			{	
-				printf("word: %s\n", word);
-			}
-
-			char buffer[2];
-			buffer[0] = i + 'a';
-			buffer[1] = '\0';
-			// printf("k:%s\n", word);
-			strcat(word, buffer);
-			
-			printTrie(current->paths[i], word);
-		}			
+	if (current->isWord)
+	{
+		printf("%s\n", word);
 	}
 
-	if (current->isWord && strlen(word) > 0)
-	{	
-		printf("word: %s\n", word);
-		strcpy(word, "");
+	for (int i = 0; i < ALPHABET_LENGTH; ++i)
+	{
+		trie* child = current->paths[i];
+
+		if (child != NULL)
+		{
+			char buffer[2];
+			buffer[0] = (i != 26) ? i + 'a' : '\'';
+			buffer[1] = '\0';
+			strcat(word, buffer);
+
+			printTrie(child, word);
+			
+			strcpy(word, "");
+		}
 	}
 }
 
@@ -154,7 +147,7 @@ unsigned int getSize()
 
 void clearTrie(trie* current)
 {
-	for (int i = 0; i < 26; i++)
+	for (int i = 0; i < ALPHABET_LENGTH; i++)
 	{	
 		if (current->paths[i] != NULL)
 		{
@@ -164,4 +157,3 @@ void clearTrie(trie* current)
 	
 	free(current);
 }
-
