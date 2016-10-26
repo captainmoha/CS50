@@ -19,7 +19,7 @@ trie* createTrie();
 void clearTrie(trie* current);
 void insert(char* word);
 bool find(char* word);
-void printTrie(trie* current, char* word);
+void printTrie(trie* current, char* word, int index);
 unsigned int getSize();
 
 trie* root;
@@ -28,7 +28,7 @@ unsigned int size = 0;
 int main(void)
 {	
 	root = createTrie();
-/*	char* strings[] = {"array", "link", "linkedlist", "stack's", "queue", "hashtable", "moha", "haha", "oh", "yeah", "arg"};
+	/*char* strings[] = {"array", "link", "linkedlist", "stack's", "queue", "hashtable", "moha", "haha", "oh", "yeah", "arg"};
 
 	for (int i = 0; i < 11; ++i)
 	{
@@ -40,8 +40,8 @@ int main(void)
 		bool isFound = find(strings[i]);
 		printf("%s yields %s\n", strings[i], isFound ? "true" : "false");
 
-	}*/
-
+	}
+*/
 	FILE* dictFile = fopen("large", "r");
 
 	if (dictFile != NULL)
@@ -59,7 +59,7 @@ int main(void)
 	char wordTemp[LENGTH];
 	strcpy(wordTemp, "");
 
-	// printTrie(root, wordTemp);
+	printTrie(root, wordTemp, 0);
 	clearTrie(root);
 	return 0;
 }
@@ -115,12 +115,14 @@ bool find(char* word)
 	return (crawler->isWord);
 }
 
-void printTrie(trie* current, char* word)
+void printTrie(trie* current, char* word, int index)
 {	
 	if (current->isWord)
 	{
 		printf("%s\n", word);
 	}
+
+	word[index + 1] = '\0';
 
 	for (int i = 0; i < ALPHABET_LENGTH; ++i)
 	{
@@ -128,16 +130,14 @@ void printTrie(trie* current, char* word)
 
 		if (child != NULL)
 		{
-			char buffer[2];
-			buffer[0] = (i != 26) ? i + 'a' : '\'';
-			buffer[1] = '\0';
-			strcat(word, buffer);
-
-			printTrie(child, word);
 			
-			strcpy(word, "");
+			word[index] = (i != 26) ? i + 'a' : '\'';
+
+			printTrie(child, word, index + 1);
 		}
 	}
+
+	word[index] = '\0';
 }
 
 unsigned int getSize()
