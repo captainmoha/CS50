@@ -36,7 +36,14 @@
 	not be changed.
 
 	
-7.  TODO
-8.  TODO
-9.  TODO
-10. TODO
+7.  I used a trie data structure. The trie was represented by a structure that contains an array of pointers to
+	other nodes (the array size was 27 which is the number of letters in the english language as well as the apostrophe).
+	Each node also contained a boolen flag called isWord which was set to true if the current node marked the end of a word.
+
+
+8.  My code wasn't slow when I first got it working. But I had some memory leaks (which I cleaned).
+
+9.  To improve the speed at which the size() function ran I kept a global variable which was updated each time a word
+	was inserted so I don't have to count the words again.
+
+10. I think reading from the file is the slowest part. But I guess that's because I/O is generally slow.
