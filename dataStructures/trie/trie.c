@@ -19,7 +19,7 @@ trie* createTrie();
 void clearTrie(trie* current);
 void insert(char* word);
 bool find(char* word);
-void printTrie();
+void printTrie(trie* current, char* word);
 unsigned int getSize();
 
 trie* root;
@@ -28,7 +28,7 @@ unsigned int size = 0;
 int main(void)
 {	
 	root = createTrie();
-	char* strings[] = {"array", "linkedlist", "stack", "queue", "hashtable", "moha", "haha", "oh", "yeah"};
+	/*char* strings[] = {"array", "link", "linkedlist", "stack", "queue", "hashtable", "moha", "haha", "oh", "yeah"};
 
 	for (int i = 0; i < 6; ++i)
 	{
@@ -40,7 +40,26 @@ int main(void)
 		bool isFound = find(strings[i]);
 		printf("%s yields %s\n", strings[i], isFound ? "true" : "false");
 
+	}*/
+
+	FILE* dictFile = fopen("large", "r");
+
+	if (dictFile != NULL)
+	{
+		char word[LENGTH];
+		while (fscanf(dictFile, "%s", word) == 1)
+		{	
+			printf("%s\n", word);
+			insert(word);
+		}
+		fclose(dictFile);
 	}
+
+	printf("Just read %d words!\n", getSize());
+	char wordTemp[LENGTH];
+	strcpy(wordTemp, "");
+
+	// printTrie(root, wordTemp);
 	clearTrie(root);
 	return 0;
 }
@@ -96,13 +115,40 @@ bool find(char* word)
 	return (crawler->isWord);
 }
 
-void printTrie(trie* current)
+void printTrie(trie* current, char* word)
 {	
-	/*TODO*/
+	// printf("Func: %s\n", word);
+
+	for (int i = 0; i < ALPHABET_LENGTH; i++)
+	{	
+		// printf("Lop: %s\n", word);
+		if (current->paths[i] != NULL)
+		{	
+
+			if (current->isWord)
+			{	
+				printf("word: %s\n", word);
+			}
+
+			char buffer[2];
+			buffer[0] = i + 'a';
+			buffer[1] = '\0';
+			// printf("k:%s\n", word);
+			strcat(word, buffer);
+			
+			printTrie(current->paths[i], word);
+		}			
+	}
+
+	if (current->isWord && strlen(word) > 0)
+	{	
+		printf("word: %s\n", word);
+		strcpy(word, "");
+	}
 }
 
 unsigned int getSize()
-{
+{	
 	return size;
 }
 
@@ -114,9 +160,8 @@ void clearTrie(trie* current)
 		{
 			clearTrie(current->paths[i]);
 		}
-
 	}
-
+	
 	free(current);
 }
 
