@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include "trie.h"
 
-unsigned int size = 0;
+unsigned int trieSize = 0;
 
 trie* createTrie()
 {
@@ -41,10 +41,10 @@ void insert(char* word)
 	}
 
 	crawler->isWord = true;
-	size++;
+	trieSize++;
 }
 
-bool find(char* word)
+bool find(const char* word)
 {	
 	/* Searches the trie for a word in O(k) where k is the length of the word */
 
@@ -52,7 +52,7 @@ bool find(char* word)
 	for (int i = 0; i < strlen(word); ++i)
 	{	
 		int path = (isalpha(word[i])) ? tolower(word[i]) - 'a' : ALPHABET_LENGTH - 1;
-		printf("path is %d : %c\n", path, path+'a');
+		// printf("path is %d : %c\n", path, path+'a');
 		if (crawler->paths[path] == NULL)
 		{
 			return false;
@@ -95,7 +95,7 @@ unsigned int getSize()
 {	
 	/* Returns the trie size */
 
-	return size;
+	return trieSize;
 }
 
 void clearTrie(trie* current)

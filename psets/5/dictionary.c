@@ -8,6 +8,8 @@
  */
 
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "trie.h"
 #include "dictionary.h"
 
@@ -16,16 +18,34 @@
  */
 bool check(const char* word)
 {
-    // TODO
-    return false;
+    
+    return find(word);
 }
 
 /**
  * Loads dictionary into memory.  Returns true if successful else false.
  */
 bool load(const char* dictionary)
-{
-    // TODO
+{	
+	// create the trie
+	root = createTrie();
+
+	// start reading from the dictionary
+    FILE* dictFile = fopen(dictionary, "r");
+
+	if (dictFile != NULL)
+	{
+		char word[LENGTH];
+		while (fscanf(dictFile, "%s", word) == 1)
+		{	
+			// printf("%s\n", word);
+			insert(word);
+		}
+		fclose(dictFile);
+		return true;
+	}
+    
+    fclose(dictFile);
     return false;
 }
 
@@ -34,8 +54,8 @@ bool load(const char* dictionary)
  */
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    
+    return getSize();
 }
 
 /**
@@ -43,6 +63,6 @@ unsigned int size(void)
  */
 bool unload(void)
 {
-    // TODO
-    return false;
+    clearTrie(root);
+    return true;
 }

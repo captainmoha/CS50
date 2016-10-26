@@ -25,7 +25,7 @@ void clearTrie(trie* current);
 void insert(char* word);
 
 /* Searches the trie for a word in O(k) where k is the length of the word */
-bool find(char* word);
+bool find(const char* word);
 
 /* Prints all words in the trie */
 void printTrie(trie* current, char* word, int index);
@@ -36,4 +36,4 @@ unsigned int getSize();
 /* Contains the root trie */
 trie* root;
 /* Contains the trie size */
-unsigned int size;
+unsigned int trieSize;
