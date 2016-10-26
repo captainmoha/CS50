@@ -8,7 +8,7 @@
  */
 
 #include <stdbool.h>
-
+#include "trie.h"
 #include "dictionary.h"
 
 /**
