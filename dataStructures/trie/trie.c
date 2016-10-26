@@ -3,69 +3,14 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include "trie.h"
 
-// maximum length for a word
-// (e.g., pneumonoultramicroscopicsilicovolcanoconiosis)
-#define LENGTH 45
-#define ALPHABET_LENGTH 27
-
-// trie structure
-typedef struct trie {
-	struct trie* paths[ALPHABET_LENGTH];
-	bool isWord;
-}	trie;
-
-trie* createTrie();
-void clearTrie(trie* current);
-void insert(char* word);
-bool find(char* word);
-void printTrie(trie* current, char* word, int index);
-unsigned int getSize();
-
-trie* root;
 unsigned int size = 0;
-
-int main(void)
-{	
-	root = createTrie();
-	/*char* strings[] = {"array", "link", "linkedlist", "stack's", "queue", "hashtable", "moha", "haha", "oh", "yeah", "arg"};
-
-	for (int i = 0; i < 11; ++i)
-	{
-		insert(strings[i]);
-	}
-
-	for (int i = 0; i < 9; ++i)
-	{
-		bool isFound = find(strings[i]);
-		printf("%s yields %s\n", strings[i], isFound ? "true" : "false");
-
-	}
-*/
-	FILE* dictFile = fopen("large", "r");
-
-	if (dictFile != NULL)
-	{
-		char word[LENGTH];
-		while (fscanf(dictFile, "%s", word) == 1)
-		{	
-			// printf("%s\n", word);
-			insert(word);
-		}
-		fclose(dictFile);
-	}
-
-	printf("Just read %d words!\n", getSize());
-	char wordTemp[LENGTH];
-	strcpy(wordTemp, "");
-
-	printTrie(root, wordTemp, 0);
-	clearTrie(root);
-	return 0;
-}
 
 trie* createTrie()
 {
+	/* Allocates and initializes a new trie and returns it */
+
 	trie* newTrie = malloc(sizeof(trie));
 	// newTrie->paths = malloc(sizeof(trie) * 26);
 	for (int i = 0; i < ALPHABET_LENGTH; i++)
@@ -80,6 +25,8 @@ trie* createTrie()
 
 void insert(char* word)
 {	
+	/* Inserts a new word into the trie */
+
 	int i, len, path;
 	trie* crawler = root;
 	for (i = 0, len = strlen(word); i < len; i++)
@@ -99,6 +46,8 @@ void insert(char* word)
 
 bool find(char* word)
 {	
+	/* Searches the trie for a word in O(k) where k is the length of the word */
+
 	trie* crawler = root;
 	for (int i = 0; i < strlen(word); ++i)
 	{	
@@ -117,6 +66,8 @@ bool find(char* word)
 
 void printTrie(trie* current, char* word, int index)
 {	
+	/* Prints all words in the trie */
+
 	if (current->isWord)
 	{
 		printf("%s\n", word);
@@ -142,11 +93,15 @@ void printTrie(trie* current, char* word, int index)
 
 unsigned int getSize()
 {	
+	/* Returns the trie size */
+
 	return size;
 }
 
 void clearTrie(trie* current)
-{
+{	
+	/* Clears a trie from memory recursively */
+
 	for (int i = 0; i < ALPHABET_LENGTH; i++)
 	{	
 		if (current->paths[i] != NULL)
