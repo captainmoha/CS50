@@ -688,7 +688,7 @@ bool load(FILE* file, BYTE** content, size_t* length)
 const char* lookup(const char* path)
 {
     char* extension = strrchr(path, '.');
-    char* extensions[] = {"css", "html", "javascript", "php", "gif", "png", "jpg", "ico"};
+    char* extensions[] = {"css", "html", "js", "php", "gif", "png", "jpg", "ico"};
     char* mime = NULL;
     
     if (extension != NULL && strlen(extension) > 0)
@@ -703,6 +703,15 @@ const char* lookup(const char* path)
                 {   
                     char* t = "text";
 
+                    if (i == 2)
+                    {
+                        char* ext = "javascript";
+                        mime = malloc(strlen(t) + 1 + strlen(ext) + 1);
+                        strcpy(mime, t);
+                        strcat(mime, "/");
+                        strcat(mime, ext);
+                        return mime;
+                    }
                     // php needs to be x-php
                     if (i == 3)
                     {
