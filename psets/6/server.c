@@ -648,23 +648,26 @@ bool load(FILE* file, BYTE** content, size_t* length)
 {   
     // TODO
 
+    *content = NULL;
+    *length = 0;
+
     if (file != NULL)
     {   
         int bytesRead = 0;
-        BYTE buffer[BYTES];
-        while ((bytesRead = fread(buffer, sizeof(BYTE), BYTES, file)) > 0)
+        BYTE buffer[1];
+        while ((bytesRead = fread(buffer, sizeof(BYTE), 1, file)) == 1)
         {
             // read from file
-            *content = realloc(*content, *length + BYTES);
+            *content = realloc(*content, *length + 1);
 
             if (*content == NULL)
             {
                 *length = 0;
                 break;
             }
-            printf("testing\n");
-            memcpy(*content + *length, buffer, BYTES);
-            *length += bytesRead;
+            
+            memcpy(*content + *length, buffer, 1);
+            (*length)++;
         }
 
         return true;
@@ -760,7 +763,7 @@ const char* lookup(const char* path)
 bool parse(const char* line, char* abs_path, char* query)
 {
     // TODO
-    
+
     bool endsWithLF =  line[strlen((char*) line) - 1] == '\n';
 
     if (line[4] == ' ')
