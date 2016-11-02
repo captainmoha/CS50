@@ -760,14 +760,19 @@ const char* lookup(const char* path)
 bool parse(const char* line, char* abs_path, char* query)
 {
     // TODO
-
+    
     bool endsWithLF =  line[strlen((char*) line) - 1] == '\n';
+
+    if (line[4] == ' ')
+    {   
+        error(400);
+        return false;
+    }
     char* method = strtok((char*)line, " ");
     char* target = strtok(NULL, " ");
     char* version = strtok(NULL, "\r");
 
-    // printf("method: %s\ttarget: %s\tversion: %s\n", method, target, version);
-
+    printf("method: %s\ttarget: %s\tversion: %s\n", method, target, version);
     if (method && target && version && endsWithLF)
     {   
 
