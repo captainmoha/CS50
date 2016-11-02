@@ -446,8 +446,8 @@ char* htmlspecialchars(const char* s)
 char* indexes(const char* path)
 {
     
-    char* htmlPath = malloc(sizeof(char) * strlen(path) + 10);
-    char* phpPath = malloc(sizeof(char) * strlen(path) + 10);
+    char* htmlPath = malloc(sizeof(char) * (strlen(path) + 11));
+    char* phpPath = malloc(sizeof(char) * (strlen(path) + 11));
 
     strcpy(htmlPath, path);
     strcat(htmlPath, "index.html");
@@ -461,7 +461,9 @@ char* indexes(const char* path)
     if (phpFile != NULL)
     {
         fclose(phpFile);
-        fclose(htmlFile);
+        
+        if (htmlFile != NULL)
+            fclose(htmlFile);
 
         free(htmlPath);
 
@@ -471,7 +473,9 @@ char* indexes(const char* path)
     else if (htmlFile != NULL)
     {
         fclose(htmlFile);
-        fclose(phpFile);
+
+        if (phpFile != NULL)
+            fclose(phpFile);
 
         free(phpPath);
 
@@ -769,28 +773,28 @@ bool parse(const char* line, char* abs_path, char* query)
 
         if (strcmp(method, "GET") != 0)
         {   
-            // printf("get\n");
+            printf("get\n");
             error(405);
             return false;
         }
         
         if (target[0] != '/')
         {   
-            // printf("/\n");
+            printf("/\n");
             error(501);
             return false;
         }
 
         if (strchr(target, '"') != NULL)
         {   
-            // printf("\"\n" );
+            printf("\"\n" );
             error(400);
             return false;
         }
 
         if (strcmp(version, "HTTP/1.1") != 0)
         {
-            // printf("version\n");
+            printf("version\n");
             error(505);
             return false;
         }
@@ -810,6 +814,8 @@ bool parse(const char* line, char* abs_path, char* query)
             strcpy(query, tempQuery + 1);
             // printf("query: %s\n", tempQuery + 1);
         }
+
+        return true;
     }
 
     error(400);
