@@ -243,6 +243,7 @@ int main(int argc, char* argv[])
 
                     // look up MIME type for file at path
                     const char* type = lookup(path);
+                    printf("type: %s\n", type);
                     if (type == NULL)
                     {
                         error(501);
@@ -618,7 +619,77 @@ bool load(FILE* file, BYTE** content, size_t* length)
  */
 const char* lookup(const char* path)
 {
-    // TODO
+    char* extension = strrchr(path, '.');
+    char* extensions[] = {"css", "html", "javascript", "php", "gif", "png", "jpg", "ico"};
+    char* mime;
+
+    if (extension != NULL && strlen(extension) > 0)
+    {
+        for (int i = 0; i < 8; i++)
+        {   
+            char* currentExt = extensions[i];
+            if (strcasecmp(currentExt, extension + 1) == 0)
+            {
+                printf("%s\n", extension + 1);
+                if (i < 4)
+                {   
+                    char* t = "text";
+
+                    // php needs to be x-php
+                    if (i == 3)
+                    {
+                        char* ext = "x-php";
+                        mime = malloc(strlen(t) + 1 + strlen(ext) + 1);
+                        strcpy(mime, t);
+                        strcat(mime, "/");
+                        strcat(mime, ext);
+                        return mime;
+                    }
+                    
+                    mime = malloc(strlen(t) + 1 + strlen(currentExt) + 1);
+                    strcpy(mime, t);
+                }
+
+                else
+                {   
+                    char* t = "image"; 
+
+                    // jpg needs to be jpeg
+                    if (i == 6)
+                    {   
+                        char* ext = "jpeg";
+                        mime = malloc(strlen(t) + 1 + strlen(ext) + 1);
+                        strcpy(mime, t);
+                        strcat(mime, "/");
+                        strcat(mime, ext);
+                        return mime;
+                    }
+
+                    // ico needs to be x-icon
+                    else if (i == 7)
+                    {
+                        char* ext = "x-icon";
+                        mime = malloc(strlen(t) + 1 + strlen(ext) + 1);
+                        strcpy(mime, t);
+                        strcat(mime, "/");
+                        strcat(mime, ext);
+                        return mime;
+                    }
+
+                    else
+                    {   
+                        mime = malloc(strlen(t) + 1 + strlen(currentExt) + 1);
+                        strcpy(mime, t);
+                    }
+                }
+
+                strcat(mime, "/");
+                strcat(mime, currentExt);
+                return mime;
+            }
+        }
+    }
+
     return NULL;
 }
 
@@ -630,7 +701,63 @@ const char* lookup(const char* path)
 bool parse(const char* line, char* abs_path, char* query)
 {
     // TODO
-    error(501);
+
+    bool endsWithLF =  line[strlen((char*) line) - 1] == '\n';
+    char* method = strtok((char*)line, " ");
+    char* target = strtok(NULL, " ");
+    char* version = strtok(NULL, "\r");
+
+    // printf("method: %s\ttarget: %s\tversion: %s\n", method, target, version);
+
+    if (method && target && version && endsWithLF)
+    {   
+
+        if (strcmp(method, "GET") != 0)
+        {   
+            // printf("get\n");
+            error(405);
+            return false;
+        }
+        
+        if (target[0] != '/')
+        {   
+            // printf("/\n");
+            error(501);
+            return false;
+        }
+
+        if (strchr(target, '"') != NULL)
+        {   
+            // printf("\"\n" );
+            error(400);
+            return false;
+        }
+
+        if (strcmp(version, "HTTP/1.1") != 0)
+        {
+            // printf("version\n");
+            error(505);
+            return false;
+        }
+
+        // if all goes well put the target in abs_path
+        strcpy(abs_path, target);
+        // printf("abs: %s \tallisvill\n", abs_path);
+        // extract query from target
+        char* tempQuery = strchr(target, '?');
+
+        if (tempQuery == NULL)
+        {
+            query[0] = '\0';
+        }
+        else
+        {
+            strcpy(query, tempQuery + 1);
+            // printf("query: %s\n", tempQuery + 1);
+        }
+    }
+
+    error(400);
     return false;
 }
 
