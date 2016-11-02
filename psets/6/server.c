@@ -609,8 +609,31 @@ void list(const char* path)
  * Stores address thereof in *content and length thereof in *length.
  */
 bool load(FILE* file, BYTE** content, size_t* length)
-{
+{   
     // TODO
+
+    if (file != NULL)
+    {   
+        int bytesRead = 0;
+        BYTE buffer[BYTES];
+        while ((bytesRead = fread(buffer, sizeof(BYTE), BYTES, file)) > 0)
+        {
+            // read from file
+            *content = realloc(*content, *length + BYTES);
+
+            if (*content == NULL)
+            {
+                *length = 0;
+                break;
+            }
+            printf("testing\n");
+            memcpy(*content + *length, buffer, BYTES);
+            *length += bytesRead;
+        }
+
+        return true;
+    }
+
     return false;
 }
 
