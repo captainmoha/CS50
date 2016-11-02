@@ -445,7 +445,39 @@ char* htmlspecialchars(const char* s)
  */
 char* indexes(const char* path)
 {
-    // TODO
+    
+    char* htmlPath = malloc(sizeof(char) * strlen(path) + 10);
+    char* phpPath = malloc(sizeof(char) * strlen(path) + 10);
+
+    strcpy(htmlPath, path);
+    strcat(htmlPath, "index.html");
+
+    strcpy(phpPath, path);
+    strcat(phpPath, "index.php");
+
+    FILE* htmlFile = fopen(htmlPath, "r");
+    FILE* phpFile = fopen(phpPath, "r");
+
+    if (phpFile != NULL)
+    {
+        fclose(phpFile);
+        fclose(htmlFile);
+
+        free(htmlPath);
+
+        return phpPath;
+    }
+
+    else if (htmlFile != NULL)
+    {
+        fclose(htmlFile);
+        fclose(phpFile);
+
+        free(phpPath);
+
+        return htmlPath;
+    }
+
     return NULL;
 }
 
