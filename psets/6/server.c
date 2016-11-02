@@ -206,7 +206,8 @@ int main(int argc, char* argv[])
 
                     // ensure path exists
                     if (access(path, F_OK) == -1)
-                    {
+                    {   
+                        printf("path: %s", path);
                         error(404);
                         continue;
                     }
@@ -252,7 +253,8 @@ int main(int argc, char* argv[])
 
                     // interpret PHP script at path
                     if (strcasecmp("text/x-php", type) == 0)
-                    {
+                    {   
+                        free((char*) type);
                         interpret(path, query);
                     }
 
@@ -481,7 +483,11 @@ char* indexes(const char* path)
 
         return htmlPath;
     }
-
+    
+    free(phpPath);
+    free(htmlPath);
+    fclose(phpFile);
+    fclose(htmlFile);
     return NULL;
 }
 
@@ -683,8 +689,8 @@ const char* lookup(const char* path)
 {
     char* extension = strrchr(path, '.');
     char* extensions[] = {"css", "html", "javascript", "php", "gif", "png", "jpg", "ico"};
-    char* mime;
-
+    char* mime = NULL;
+    
     if (extension != NULL && strlen(extension) > 0)
     {
         for (int i = 0; i < 8; i++)
@@ -751,7 +757,7 @@ const char* lookup(const char* path)
             }
         }
     }
-
+    
     return NULL;
 }
 
@@ -820,6 +826,8 @@ bool parse(const char* line, char* abs_path, char* query)
         else
         {
             strcpy(query, tempQuery + 1);
+            char* tempAbs = strchr(abs_path, '?');
+            *tempAbs = '\0';
             // printf("query: %s\n", tempQuery + 1);
         }
 
@@ -1178,9 +1186,12 @@ void transfer(const char* path, const char* type)
 
     // respond with file's content
     respond(200, headers, content, length);
-
+    
     // free file's content
     free(content);
+    
+    // free type
+    free((char*)type);
 }
 
 /**
