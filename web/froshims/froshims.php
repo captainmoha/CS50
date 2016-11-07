@@ -5,9 +5,17 @@
 		<title>Frosh IMs</title>
 	</head>
 	<body>
+		<?php
+			session_start();
+			if (isset($_SESSION["name"]))
+			{
+				print("<h1>You have already registered {$_SESSION["name"]} :)");
+				exit(0);
+			}
+		?>
 		<h1>Register for Frosh IMs</h1>
 
-		<form action="register3.php" method="post">
+		<form action="register2.php" method="post">
 			Name: <input name="name" type="text"/>
 			<br>
 			<input name="captain" type="checkbox"/> Captain?
