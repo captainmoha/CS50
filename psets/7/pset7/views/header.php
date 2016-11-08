@@ -3,7 +3,7 @@
 <html>
 
     <head>
-
+        <meta charset="UTF-8">
         <!-- http://getbootstrap.com/ -->
         <link href="/css/bootstrap.min.css" rel="stylesheet"/>
 
