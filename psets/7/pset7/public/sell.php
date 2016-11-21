@@ -7,7 +7,7 @@
 	if ($_SERVER["REQUEST_METHOD"] == "GET")
 	{	
 		// Get the stocks the user currently owns and pass along the title to render the form
-		$rows = CS50::query("SELECT symbol FROM portfolios WHERE user_id = ?", $_SESSION["id"]);
+		$rows = CS50::query("SELECT symbol, shares FROM portfolios WHERE user_id = ?", $_SESSION["id"]);
 		if (count($rows) < 1)
 		{
 			apologize("Nothing to sell!");

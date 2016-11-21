@@ -5,15 +5,19 @@
 				<option disabled="" selected="" value="">Symbol</option>
 				<?php
 					foreach ($ownedStocks as $stock)
-					{
-						print("<option value=\"{$stock["symbol"]}\">{$stock["symbol"]}</option>");
+					{	
+						$price = lookup($stock["symbol"])["price"] * $stock["shares"];
+						print("<option value=\"{$stock["symbol"]}\">{$stock["symbol"]} -- \${$price}</option>");
 					}
 				?>
 			</select>
 		</div>
 
 		<div class="form-group">
-			<button type="submit" class="btn btn-primary"> Sell</button>
+			<button type="submit" class="btn btn-primary">
+				<span aria-hidden="true" class="glyphicon glyphicon-usd"></span>
+				Sell
+			</button>
 		</div>
 	</form>
 </div>
