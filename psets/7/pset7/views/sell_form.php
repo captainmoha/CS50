@@ -6,7 +6,7 @@
 				<?php
 					foreach ($ownedStocks as $stock)
 					{	
-						$price = lookup($stock["symbol"])["price"] * $stock["shares"];
+						$price = number_format(lookup($stock["symbol"])["price"] * $stock["shares"], 2);
 						print("<option value=\"{$stock["symbol"]}\">{$stock["symbol"]} -- \${$price}</option>");
 					}
 				?>

@@ -1,7 +1,8 @@
 <div id="user_section">
     <?php
     	print("<h1>Welcome back <strong>{$username}</strong>!</h1>");
-    	print("<h3>Current cash: <strong>{$cash}</strong></h1>");
+    	$money = number_format($cash, 2);
+    	print("<h3>Current cash: <strong>{$money}</strong></h1>");
     ?>
 </div>
 

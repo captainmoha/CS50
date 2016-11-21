@@ -18,12 +18,13 @@
 					foreach($data as $datum)
 		    		{	
 		    			$transaction = $datum["transaction"] ? "BUY" : "SELL";
+		    			$price = number_format($datum["price"], 2);
 		    			print("<tr>");
 		    			print("<td>{$transaction}</td>");
 		    			print("<td>{$datum["time"]}</td>");
 		    			print("<td>{$datum["symbol"]}</td>");
 		    			print("<td>{$datum["shares"]}</td>");
-		    			print("<td>{$datum["price"]}</td>");
+		    			print("<td>{$price}</td>");
 		    			print("</tr>");
 		    		}
 				}
