@@ -2,6 +2,8 @@
 	
 	// config
 	require("../includes/config.php");
+	// SELL used to identify transaction type ; arbitrary value of false, SELL is true
+	$SELL = false;
 
 	// if the user got here to sell
 	if ($_SERVER["REQUEST_METHOD"] == "GET")
@@ -29,11 +31,12 @@
 			$rows = CS50::query("SELECT shares FROM portfolios WHERE user_id = ? AND symbol = ?",
 								 $_SESSION["id"], $userInp);
 
+			$shares = $rows[0]["shares"];
 			// lookup the price of the stock on yahoo finance
 			$sharePrice = lookup($userInp)["price"];
 
 			// calculate the total price
-			$totalPrice = $sharePrice * $rows[0]["shares"];
+			$totalPrice = $sharePrice * $shares;
 
 			// sell the stock ie: delete its entry from the database
 
@@ -42,6 +45,10 @@
 
 			// update user's cash
 			$cashIn = CS50::query("UPDATE users SET cash = cash + $totalPrice WHERE id = ?", $_SESSION["id"]);
+
+			// insert transaction into history
+
+			CS50::query("INSERT INTO history (user_id, symbol, shares, price, transaction) VALUES(?, ?, ?, ?, ?)", $_SESSION["id"], $userInp, $shares, $sharePrice, $SELL);
 
 			// go back to the root
 			redirect("/");

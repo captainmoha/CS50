@@ -1,6 +1,9 @@
 <?php
+	
+	// config
 	require("../includes/config.php");
-
+	// BUY used to identify transaction type ; arbitrary value of true, SELL is false
+	$BUY = true;
 
 	if ($_SERVER["REQUEST_METHOD"] == "GET")
 	{
@@ -34,6 +37,11 @@
 
 					// subtract from users cash to complete the transaction
 					CS50::query("UPDATE users SET cash = cash - ? WHERE id = ?", $price, $_SESSION["id"]);
+
+					// insert transaction into history
+
+					CS50::query("INSERT INTO history (user_id, symbol, shares, price, transaction) VALUES(?, ?, ?, ?, ?)", $_SESSION["id"], $isStock["symbol"], $shares, $isStock["price"], $BUY);
+					
 					redirect("/");
 				}
 
