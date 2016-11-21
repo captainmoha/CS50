@@ -1,7 +1,7 @@
 <form action="quote.php" method="post">
     <fieldset>
         <div class="form-group">
-            <input autocomplete="off" autofocus class="form-control" name="stock" placeholder="stock symbol" type="text"/>
+            <input autocomplete="off" autofocus class="form-control" name="stock" placeholder="Stock symbol(eg: GOOG)" type="text"/>
         </div>
         <div class="form-group">
             <button class="btn btn-primary" type="submit">

@@ -1,7 +1,7 @@
 <div>
 	<form action="buy.php" method="post" class="form-horizontal">
 		<div class="form-group">
-			<input type="text" name="symbol" placeholder="Symbol" class="form-control">
+			<input type="text" name="symbol" placeholder="Symbol eg: GOOG" class="form-control">
 		</div>
 
 		<div class="form-group">
