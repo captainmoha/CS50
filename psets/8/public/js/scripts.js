@@ -192,7 +192,7 @@ function addMarker(place)
                 }
 
                 articles += '</ul>';
-                console.log(articles);
+                // console.log(articles);
                 showInfo(marker, articles);
             }
             
