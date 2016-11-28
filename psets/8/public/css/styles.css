@@ -96,3 +96,10 @@ html, body, #map-canvas, .container-fluid
 .tt-suggestion p {
     margin: 0;
 }
+
+.marker-label {
+    color: white;
+    font-size: 32;
+    font-family: verdana;
+    white-space: nowrap;
+}

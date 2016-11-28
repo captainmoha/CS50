@@ -41,21 +41,99 @@ $(function() {
             stylers: [
                 {visibility: "off"}
             ]
-        }
+        },
 
+        {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+        {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+        {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+        {
+          featureType: 'administrative.locality',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#d59563'}]
+        },
+        {
+          featureType: 'poi',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#d59563'}]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'geometry',
+          stylers: [{color: '#263c3f'}]
+        },
+        {
+          featureType: 'poi.park',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#6b9a76'}]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry',
+          stylers: [{color: '#38414e'}]
+        },
+        {
+          featureType: 'road',
+          elementType: 'geometry.stroke',
+          stylers: [{color: '#212a37'}]
+        },
+        {
+          featureType: 'road',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#9ca5b3'}]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry',
+          stylers: [{color: '#746855'}]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'geometry.stroke',
+          stylers: [{color: '#1f2835'}]
+        },
+        {
+          featureType: 'road.highway',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#f3d19c'}]
+        },
+        {
+          featureType: 'transit',
+          elementType: 'geometry',
+          stylers: [{color: '#2f3948'}]
+        },
+        {
+          featureType: 'transit.station',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#d59563'}]
+        },
+        {
+          featureType: 'water',
+          elementType: 'geometry',
+          stylers: [{color: '#17263c'}]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.fill',
+          stylers: [{color: '#515c6d'}]
+        },
+        {
+          featureType: 'water',
+          elementType: 'labels.text.stroke',
+          stylers: [{color: '#17263c'}]
+        }
     ];
 
     // options for map
     // https://developers.google.com/maps/documentation/javascript/reference#MapOptions
     var options = {
-        center: {lat: 37.4236, lng: -122.1619}, // Stanford, California
+        center: {lat: 42.3770, lng: -71.1256}, // Stanford, California
         disableDefaultUI: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         maxZoom: 14,
         panControl: true,
-        styles: styles,
         zoom: 13,
-        zoomControl: true
+        zoomControl: true,
+        styles: styles
     };
 
     // get DOM node in which map will be instantiated
@@ -73,8 +151,61 @@ $(function() {
  * Adds marker for place to map.
  */
 function addMarker(place)
-{
-    // TODO
+{   
+    var lat = parseFloat(place["latitude"]);
+    var lng = parseFloat(place["longitude"]);
+    var marker = new MarkerWithLabel({
+       position: {lat, lng},
+       draggable: false,
+       raiseOnDrag: false,
+       map: map,
+       labelContent: place["place_name"],
+       labelAnchor: new google.maps.Point(0, 0),
+       labelClass: "marker-label", // the CSS class for the label
+       labelStyle: {opacity: 1},
+       icon: "../img/information.png"
+    });
+
+    var parameters = {
+        geo: place["place_name"]
+    };
+
+    
+
+    marker.addListener('click', function() {
+
+        $.getJSON("articles.php", parameters)
+        .done(function(data, textStatus, jqXHR) {
+
+            if (data.length < 1) {
+                showInfo(marker, "<h4>Slow news day here!</h4>");
+            }
+
+            else {
+                var articles = '<ul>';
+
+                for (var i = 0; i < data.length; i++) {
+                    var article = data[i];
+
+                    articles += '<li><a href="' + article["link"] + '" target="_blank">';
+                    articles += article["title"] + '</a></li>';
+                }
+
+                articles += '</ul>';
+                console.log(articles);
+                showInfo(marker, articles);
+            }
+            
+
+        })
+        .fail(function(jqXHR, textStatus, errorThrown) {
+
+            // log error to browser's console
+            console.log(errorThrown.toString());
+        });        
+    });
+
+    markers.push(marker);
 }
 
 /**
@@ -99,6 +230,7 @@ function configure()
 
     // configure typeahead
     // https://github.com/twitter/typeahead.js/blob/master/doc/jquery_typeahead.md
+    var template = '<p> <%- place_name %>, <%- admin_name1 %> <em> <%- postal_code %> </em></p>';
     $("#q").typeahead({
         autoselect: true,
         highlight: true,
@@ -108,7 +240,7 @@ function configure()
         source: search,
         templates: {
             empty: "no places found yet",
-            suggestion: _.template("<p>TODO</p>")
+            suggestion: _.template(template)
         }
     });
 
@@ -158,8 +290,12 @@ function hideInfo()
  * Removes markers from map.
  */
 function removeMarkers()
-{
-    // TODO
+{   
+    for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+
+    markers = [];
 }
 
 /**
@@ -190,6 +326,7 @@ function search(query, cb)
 function showInfo(marker, content)
 {
     // start div
+
     var div = "<div id='info'>";
     if (typeof(content) === "undefined")
     {
@@ -238,6 +375,7 @@ function update()
         {
             addMarker(data[i]);
         }
+
      })
      .fail(function(jqXHR, textStatus, errorThrown) {
 
